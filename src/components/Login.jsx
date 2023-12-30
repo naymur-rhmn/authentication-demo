@@ -1,8 +1,14 @@
 import React, { useContext } from 'react';
 import { UserContext } from '../providers/UserProvider';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function Login() {
   const { logIn } = useContext(UserContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const from = location.state?.from?.pathname || '/';
+
   // handle login function
   function handleLogin(e) {
     e.preventDefault();
@@ -11,11 +17,15 @@ function Login() {
     const password = form.password.value;
     // invoke login function to log in with email & password
     logIn(email, password)
-      .then()
+      .then((result) => {
+        // reset the form
+        form.reset();
+        // redirect to from or home // have confusion with > { replace: true } <-- find out
+        navigate(from, { replace: true });
+      })
       .catch((err) => console.log(err));
-    // reset the form
-    form.reset();
   }
+
   return (
     <div className='container mx-auto px-6'>
       <div className='py-12 px-3 border mt-5'>

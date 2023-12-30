@@ -17,18 +17,22 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <div>hello world!</div>,
+        element: (
+          <div className='container mx-auto px-6 border py-6 text-3xl'>
+            hello world!
+          </div>
+        ),
       },
       {
-        path: '/login',
+        path: 'login',
         element: <Login />,
       },
       {
-        path: '/register',
+        path: 'register',
         element: <Register />,
       },
       {
-        path: '/products',
+        path: 'products',
         element: (
           <PrivateRoute>
             <Products></Products>

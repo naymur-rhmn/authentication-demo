@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react';
+import app from '../authentication/firebase.config';
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -6,7 +7,6 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth';
-import app from '../authentication/firebase.config';
 
 export const UserContext = createContext(null);
 
@@ -15,14 +15,15 @@ const auth = getAuth(app);
 
 function UserProvider({ children }) {
   const [user, setUser] = useState(null);
+
   const signUp = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
-
   const logIn = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
+  // observer
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -31,6 +32,7 @@ function UserProvider({ children }) {
         const userId = user.uid;
         setUser({ email, name, userId });
       } else {
+        setUser(null);
       }
     });
   }, []);
@@ -42,12 +44,12 @@ function UserProvider({ children }) {
       })
       .catch((err) => {});
   };
-  // end authentication code
+  // end authentication
 
   const data = {
+    user,
     signUp,
     logIn,
-    user,
     logOut,
   };
   return <UserContext.Provider value={data}>{children}</UserContext.Provider>;

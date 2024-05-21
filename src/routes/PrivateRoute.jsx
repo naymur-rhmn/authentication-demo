@@ -10,8 +10,8 @@ function PrivateRoute({ children }) {
   if (user) {
     return children;
   }
-  // state props handling users current location state
-  return <Navigate to='/login' state={{ from: location }} />;
+  // state props handling user's current location state
+  return <Navigate to='/login' state={{ from: location }} replace />;
 }
 
 export default PrivateRoute;
